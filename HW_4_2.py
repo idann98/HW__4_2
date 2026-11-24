@@ -62,17 +62,43 @@ class MainWindow(QWidget):
         )
         if file_path != "":
             self.csv_path = file_path
-            # TODO: פתיחת הקובץ ומילוי self.temps ו-self.revenues + קריאה ל-self.plot_graph()
-            pass
+            self.temps = []
+            self.revenues = []
+
+            with open(self.csv_path, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+
+            for line in lines[1:]:
+                line = line.strip()
+                if line != "":
+                    parts = line.split(",")
+                    temp = float(parts[0].strip())
+                    rev = float(parts[1].strip())
+
+                    self.temps.append(temp)
+                    self.revenues.append(rev)
+
+            self.plot_graph()
 
     def plot_graph(self):
         self.figure.clear()
         axes = self.figure.add_subplot(111)
-        axes.plot([0, 1, 2, 3, 4], [0, 1, 4, 9, 16], marker="o")
-        axes.set_title("Temporary Plot")
-        axes.set_xlabel("X")
-        axes.set_ylabel("Y")
-        axes.grid(True, alpha=0.3)
+
+        if len(self.temps) > 0 and len(self.revenues) > 0:
+            axes.scatter(self.temps, self.revenues, s=1)
+            axes.set_xlabel("Temperature")
+            axes.set_ylabel("Revenue")
+            axes.set_title("Ice Cream Revenue vs Temperature")
+            axes.spines["top"].set_visible(False)
+            axes.spines["right"].set_visible(False)
+        else:
+            axes.plot([0, 1, 2, 3, 4], [0, 1, 4, 9, 16], marker="o")
+            axes.set_title("Temporary Plot")
+            axes.set_xlabel("X")
+            axes.set_ylabel("Y")
+            axes.spines["top"].set_visible(False)
+            axes.spines["right"].set_visible(False)
+
         self.figure.tight_layout()
         self.canvas.draw()
 
