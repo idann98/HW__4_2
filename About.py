@@ -19,7 +19,7 @@ class AboutWindow(QWidget):
         self.my_linkedin.setGeometry(150,100,300,30)
         self.my_linkedin.setOpenExternalLinks(True)
 
-        self.my_github = QLabel('<a href="https://github.com/idann98/HW__4">My GitHub</a>', self)
+        self.my_github = QLabel('<a href="https://github.com/idann98/HW__4_2">My GitHub</a>', self)
         self.my_github.setGeometry(150,130,300,30)
         self.my_github.setOpenExternalLinks(True)
 
