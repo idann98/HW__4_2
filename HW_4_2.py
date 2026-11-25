@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+import numpy as np
 
 from PySide6.QtWidgets import (
     QApplication,
@@ -91,6 +92,23 @@ class MainWindow(QWidget):
             axes.set_title("Ice Cream Revenue vs Temperature")
             axes.spines["top"].set_visible(False)
             axes.spines["right"].set_visible(False)
+
+            m, b = np.polyfit(self.temps, self.revenues, 1)
+            x_line = np.linspace(min(self.temps), max(self.temps), 100)
+            y_line = m * x_line + b
+
+            axes.plot(x_line, y_line, color="red", linewidth=2)
+
+            sign = "+" if b >= 0 else "-"
+            eq_text = f"y = {m:.2f}x {sign} {abs(b):.2f}"
+            axes.text(
+                0.05,
+                0.9,
+                eq_text,
+                transform=axes.transAxes,
+                fontsize=11,
+                bbox=dict(boxstyle="round", facecolor="white", alpha=0.8),
+            )
         else:
             axes.plot([0, 1, 2, 3, 4], [0, 1, 4, 9, 16], marker="o")
             axes.set_title("Temporary Plot")
